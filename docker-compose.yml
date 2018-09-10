@@ -1,0 +1,17 @@
+version: '3'
+
+services: 
+  api:
+    container_name: hurriyet_api
+    build: ./api
+    environment: 
+      - HURRIYET_API_KEY=${HURRIYET_API_KEY}
+  web:
+    container_name: hurriyet_lite
+    build: ./web
+    volumes:
+      - ./web:/var/www/html
+    ports:
+      - 8000:80
+    depends_on: 
+      - api
