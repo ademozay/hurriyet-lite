@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  api:
+    image: ademozay/hurriyet_api:latest
+    environment:
+      - HURRIYET_API_KEY=${HURRIYET_API_KEY}
+    deploy:
+      restart_policy:
+        condition: on-failure
+  web:
+    image: ademozay/hurriyet_web:latest
+    deploy:
+      restart_policy:
+        condition: on-failure
+    depends_on:
+      - api
+    ports:
+      - 8000:80
