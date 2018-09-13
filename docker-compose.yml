@@ -5,8 +5,6 @@ services:
     build: ./api
     environment: 
       - HURRIYET_API_KEY=${HURRIYET_API_KEY}
-    depends_on: 
-      - redis
     restart: always
   web:
     build: ./web
