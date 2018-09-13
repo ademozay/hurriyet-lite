@@ -10,7 +10,7 @@
 export HURRIYET_API_KEY=<API Key>
 ```
 
-### docker-compose
+### docker-compose
 
 ```shell
 docker-compose-up
@@ -18,7 +18,7 @@ docker-compose-up
 
 Uygulamaya http://localhost:8000 adresinden erişilebilir.
 
-### docker swarm
+### docker swarm
 
 ```shell
 docker stack deploy --compose-file docker-compose.prod.yml hurriyet
