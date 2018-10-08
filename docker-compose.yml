@@ -6,11 +6,13 @@ services:
     environment: 
       - HURRIYET_API_KEY=${HURRIYET_API_KEY}
     restart: always
-  web:
-    build: ./web
-    volumes:
-      - ./web:/var/www/html
     ports:
       - 8000:80
-    depends_on: 
+  www:
+    build: ./www
+    volumes:
+      - ./www:/app
+    ports:
+      - 5000:5000
+    depends_on:
       - api

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -14,6 +15,7 @@ var apikey = os.Getenv("HURRIYET_API_KEY")
 
 // Articles fetches newest articles from Hürriyet API
 func Articles(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 
 	url := api + "/articles?$select=Id,Title"
 
@@ -41,6 +43,7 @@ func Articles(w http.ResponseWriter, r *http.Request) {
 
 // Article fetches article detail by article ID
 func Article(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 
 	id := r.URL.Query().Get("id")
 	if id == "" {
@@ -69,7 +72,14 @@ func Article(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprint(w, string(body))
+	var article map[string]string
+	err = json.Unmarshal(body, &article)
+	if err != nil {
+		fmt.Fprint(w, err.Error())
+		return
+	}
+
+	json.NewEncoder(w).Encode(article)
 }
 
 func main() {
