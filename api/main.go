@@ -6,6 +6,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/gorilla/mux"
 )
 
 const api = "https://api.hurriyet.com.tr/v1"
@@ -14,6 +16,7 @@ var apikey = os.Getenv("HURRIYET_API_KEY")
 
 // Articles fetches newest articles from Hürriyet API
 func Articles(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 
 	url := api + "/articles?$select=Id,Title"
 
@@ -41,8 +44,10 @@ func Articles(w http.ResponseWriter, r *http.Request) {
 
 // Article fetches article detail by article ID
 func Article(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 
-	id := r.URL.Query().Get("id")
+	vars := mux.Vars(r)
+	id := vars["id"]
 	if id == "" {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
@@ -73,7 +78,8 @@ func Article(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/articles", Articles)
-	http.HandleFunc("/article", Article)
-	log.Fatal(http.ListenAndServe(":80", nil))
+	mux := mux.NewRouter()
+	mux.HandleFunc("/articles", Articles).Methods("GET")
+	mux.HandleFunc("/articles/{id}", Article).Methods("GET")
+	log.Fatal(http.ListenAndServe(":8091", mux))
 }

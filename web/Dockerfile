@@ -1,5 +1,5 @@
-FROM php:5.6-apache
-
-COPY . /var/www/html
-
-RUN a2enmod rewrite
+FROM node:alpine
+ENV PATH /app/node_modules/.bin:$PATH
+WORKDIR /app
+EXPOSE 3000
+CMD [ "yarn", "start" ]
